@@ -18,33 +18,32 @@ jobs:
           python-version: '3.12'
 
       - name: Install minimal deps
-        run: |
-          pip install pyyaml
+        run: pip install pyyaml
 
       - name: Validate Python syntax (scripts)
-        run: |
-          python -m py_compile 03-finance-101/scripts/*.py 04-finance-201/scripts/*.py || echo "Script validation complete (some may need full env)"
+        run: python -m py_compile 03-finance-101/scripts/*.py 04-finance-201/scripts/*.py
 
       - name: Validate notebooks parse
         run: |
-          python -c "
-          import json, glob
-          for nb in glob.glob('**/*.ipynb', recursive=True):
-              if 'checkpoint' in nb: continue
-              with open(nb) as f:
-                  data = json.load(f)
-              print(f'Valid: {nb} ({len(data.get(\"cells\", []))} cells)')
-          print('All notebooks parsed successfully')
-          "
+          python -c '
+import json, glob
+for nb in glob.glob("**/*.ipynb", recursive=True):
+    if "checkpoint" in nb: continue
+    with open(nb) as f:
+        data = json.load(f)
+    print(f"Valid: {nb} ({len(data.get(\"cells\", []))} cells)")
+print("All notebooks parsed successfully")
+'
 
       - name: Check environment yml minimal
         run: |
           for f in $(find . -name 'environment.yml' ! -name '*full-export*'); do
             echo "Checking $f"
-            python -c "
-import yaml
-with open('$f') as f: data = yaml.safe_load(f)
-print(f'  name: {data.get(\"name\")}')
-print(f'  deps: {len(data.get(\"dependencies\", []))}')
-" 
+            python -c '
+import yaml, sys
+with open(sys.argv[1]) as fh:
+    data = yaml.safe_load(fh)
+print(f"  name: {data.get(\"name\")}")
+print(f"  deps: {len(data.get(\"dependencies\", []))}")
+' "$f"
           done
