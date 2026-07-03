@@ -2,7 +2,7 @@
 
 Hands-on Anaconda, conda, Jupyter, and Python-for-finance learning experiments.
 
-This project is the first being formalized with the **Grok Harness** (router + Plan-Architect diagnosis completed 2026-07-03).
+This project is formalized with the **Grok Harness** (see registry entry and handoff for harness context).
 
 ## Modules (Learning Progression)
 
@@ -10,63 +10,64 @@ This project is the first being formalized with the **Grok Harness** (router + P
 |--------|-------|---------------|
 | `01-first-chart/` | Basic data pull + visualization | `chart.py`, environment.yml |
 | `02-jupyter-explore/` | Jupyter notebook basics | `country_explorer.ipynb` |
-| `03-finance-101/` | Financial statements, ratios, TVM, stocks, portfolios | Full notebooks/ (with narrative markdown + cleaned hardcodes), scripts/, data/, README.md |
-| `04-finance-201/` | Personal finance (budgeting, debt, rent vs buy) + CLI tools | notebooks/, scripts/, data/charts/, README.md |
+| `03-finance-101/` | Financial statements, ratios, TVM, stocks, portfolios | notebooks/ (narrative + "Try This" + constants), scripts/, data/, README.md |
+| `04-finance-201/` | Personal finance + CLI tools | notebooks/ (with Try This), scripts/, data/charts/, README.md |
 
-## Quick Start
+## Quick Start (Exact Commands)
 
-Each module manages its own conda environment.
-
-Example (finance-101):
+1. Recreate and activate the environment for a module (example for 03):
 
 ```bash
 cd 03-finance-101
 conda env create -f environment.yml
 conda activate finance-101
+```
+
+2. Launch JupyterLab:
+
+```bash
 jupyter lab
 ```
 
-See the `README.md` inside `03-finance-101/` and `04-finance-201/` for detailed phases, data descriptions, CLI examples, and chart explanations.
+3. In JupyterLab:
+   - Navigate the file browser on the left.
+   - Open `notebooks/<something>.ipynb` (double-click).
+   - Run cells with **Shift + Enter** (or Run menu).
 
-## How to Use for Actual Learning / Drilling Now
+4. Use the CLI scripts (example):
 
-The project is harness-formalized and ready:
-- Follow the progression in the modules table above.
-- In any notebook, use the "Try This" sections: change a named constant (e.g. a rate or extra payment), re-execute the relevant cells, observe how the finance outcome changes.
-- This turns passive reading into active experimentation so the concepts stick.
-- Use the CLI scripts for quick "what if" scenarios outside Jupyter.
-- Git is active locally — branch to experiment, commit your learnings.
+```bash
+python scripts/rent_vs_buy.py --help
+python scripts/rent_vs_buy.py --rent 1800 --price 400000 --down 0.2 --rate 0.065 --years 30
+```
 
-When you're done with a learning session, we can use the harness to wrap (handoff) what you discovered.
+See per-module `README.md` (in 03/ and 04/) for phases and more examples.
 
-## Current Harness Formalization (Chunk 1+)
+## How to Use for Actual Learning / Drilling
 
-This project follows the approved plan from the harness session:
+- Follow the progression above for building concepts step by step.
+- In notebooks: Read the markdown cells (overviews + explanations). Find **"Try This"** sections at the end of many notebooks.
+  - Example: Edit a named constant (e.g. change a value in `RATES = [...]` or `SIM_YEARS`), then **Shift+Enter** on the cell(s) that use it.
+  - Watch the chart/output update live. This is how you actively drill "what if this changes?".
+- Tweak, re-run, observe, repeat. Git lets you branch your experiments.
+- Scripts are for quick non-Jupyter "what if" runs (see --help).
 
-- Registered in grok-harness/config/registry.yaml (stack: data-science-conda-jupyter, rigor: prototype)
-- Root hygiene: this README + .gitignore
-- Future chunks (see plan.md in session): environment standardization, notebook documentation quality, script robustness + error handling, end-to-end verification
+## Current State
 
-**Process notes** (human-in-the-loop by design):
-- All changes go through explicit diagnosis → plan → human review + approval.
-- Visibility: registry, plans, command output, and diffs are always surfaced.
-- You steer creative direction and high-level decisions. The harness handles structure, verification, and mundane execution.
+- Environments: Minimal declarative `environment.yml` (full exports backed up as `environment-full-export.yml` in 03/04).
+- Notebooks: Narrative docs + extracted constants + Try This exercises for active learning.
+- Scripts: Improved validation/error handling on key ones.
+- Structure: Root + per-module READMEs (03/04), .gitignore, local git.
+- Harness: Registered (data-science-conda-jupyter, prototype). See grok-harness docs/handoff for AI session history.
 
-## Learning Path & How to Drill Concepts
+## Learning Path Summary
 
-The modules form a progressive curriculum:
+Progressive build:
+- 01-02: Get data in, plot it, Jupyter comfort.
+- 03: Core finance skills (statements → health metrics → TVM → market analysis → portfolio risk/return).
+- 04: Apply to real life (budgeting, debt, housing) + turn explorations into reusable CLI tools.
 
-1. Basics (01-02): Real data + viz, Jupyter practice.
-2. Core Finance (03): Statements → ratios/health → TVM → stocks → portfolios.
-3. Application (04): Personal finance + CLI tools extracted from notebooks.
-
-**Now that it's harness-formalized:**
-- Each notebook has narrative docs + "Try This" exercises (tweak a constant like rate or extra payment, re-run, observe the effect).
-- Key parameters are named constants (not magic numbers) so you can experiment safely.
-- Run in order for building intuition, or jump in and modify to test "what if".
-- Activate the env, open Jupyter, tweak, learn.
-
-See per-module READMEs for phases. This setup keeps things organized and lean while maximizing learning.
+The harness layer adds: reproducibility, clear docs, tunable params for experiments, version control, and high standards without bloat.
 
 ## Principles We're Applying
 
@@ -76,8 +77,8 @@ See per-module READMEs for phases. This setup keeps things organized and lean wh
 - One chunk at a time with verification gates
 - Code quality, error handling at boundaries, and reader-focused docs (drawing from established patterns)
 
-Generated charts are currently committed (trade-off decision logged in plan). Environments are being improved from full pinned exports toward minimal declarative specs.
+Charts committed for instant visuals (trade-off noted in plan). See per-module READMEs for details.
 
 ---
 
-See `/Users/stevenromero/Development/grok-harness/docs/session-handoff-2026-07-03-anaconda.md` and the executed plan for full context.
+For harness/AI session context: `/Users/stevenromero/Development/grok-harness/docs/session-handoff-2026-07-03-anaconda.md` (and latest handoff). Project content lives here; harness state is external for clean sessions.
