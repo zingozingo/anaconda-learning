@@ -18,8 +18,16 @@ def build_parser():
     return parser
 
 
+def validate_args(args):
+    if args.rent <= 0 or args.price <= 0 or args.rate < 0 or args.years <= 0:
+        raise ValueError("Rent, price, and years must be positive; rate >= 0")
+    if not 0 <= args.down <= 1:
+        raise ValueError("Down payment must be between 0 and 1 (e.g. 0.20 for 20%)")
+    return True
+
 def run_analysis(args):
     """Core analysis — reuses logic from our notebook."""
+    validate_args(args)
     down_payment = args.price * args.down
     loan = args.price - down_payment
     monthly_rate = args.rate / 12
@@ -96,5 +104,11 @@ def display_results(args, results):
 if __name__ == "__main__":
     parser = build_parser()
     args = parser.parse_args()
-    results = run_analysis(args)
-    display_results(args, results)
+    try:
+        results = run_analysis(args)
+        display_results(args, results)
+    except (ValueError, ZeroDivisionError) as e:
+        print(f"Error: {e}")
+        print("See --help for usage. Example: python scripts/rent_vs_buy.py --home-price 400000 --down-payment 0.2 --rate 0.065 --rent 1800")
+        import sys
+        sys.exit(1)

@@ -41,6 +41,22 @@ This project follows the approved plan from the harness session:
 - Visibility: registry, plans, command output, and diffs are always surfaced.
 - You steer creative direction and high-level decisions. The harness handles structure, verification, and mundane execution.
 
+## Learning Path & How to Drill Concepts
+
+The modules form a progressive curriculum:
+
+1. Basics (01-02): Real data + viz, Jupyter practice.
+2. Core Finance (03): Statements → ratios/health → TVM → stocks → portfolios.
+3. Application (04): Personal finance + CLI tools extracted from notebooks.
+
+**Now that it's harness-formalized:**
+- Each notebook has narrative docs + "Try This" exercises (tweak a constant like rate or extra payment, re-run, observe the effect).
+- Key parameters are named constants (not magic numbers) so you can experiment safely.
+- Run in order for building intuition, or jump in and modify to test "what if".
+- Activate the env, open Jupyter, tweak, learn.
+
+See per-module READMEs for phases. This setup keeps things organized and lean while maximizing learning.
+
 ## Principles We're Applying
 
 - Diagnose before acting
