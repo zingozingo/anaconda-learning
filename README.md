@@ -28,6 +28,17 @@ jupyter lab
 
 See the `README.md` inside `03-finance-101/` and `04-finance-201/` for detailed phases, data descriptions, CLI examples, and chart explanations.
 
+## How to Use for Actual Learning / Drilling Now
+
+The project is harness-formalized and ready:
+- Follow the progression in the modules table above.
+- In any notebook, use the "Try This" sections: change a named constant (e.g. a rate or extra payment), re-execute the relevant cells, observe how the finance outcome changes.
+- This turns passive reading into active experimentation so the concepts stick.
+- Use the CLI scripts for quick "what if" scenarios outside Jupyter.
+- Git is active locally — branch to experiment, commit your learnings.
+
+When you're done with a learning session, we can use the harness to wrap (handoff) what you discovered.
+
 ## Current Harness Formalization (Chunk 1+)
 
 This project follows the approved plan from the harness session:
