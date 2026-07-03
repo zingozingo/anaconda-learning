@@ -28,34 +28,34 @@ jobs:
 
       - name: Check notebooks are valid JSON (non-fatal)
         run: |
-          for nb in $(find . -name "*.ipynb" ! -path "*/.ipynb_checkpoints/*"); do
-            python -c '
-import json
-try:
-  with open("'"$nb"'") as f:
-    data = json.load(f)
-  print("OK:", "'"$nb"'", len(data.get("cells", [])), "cells")
-except Exception as e:
-  print("Issue with", "'"$nb"'", ":", e)
-' || echo "Issue with $nb"
-          done
+          python -c '
+import json, glob
+for nb in glob.glob("**/*.ipynb", recursive=True):
+    if "checkpoint" in nb: continue
+    try:
+        with open(nb) as f:
+            data = json.load(f)
+        print("OK:", nb, len(data.get("cells", [])), "cells")
+    except Exception as e:
+        print("Issue with", nb, ":", e)
+' || echo "Notebook check had issues"
         continue-on-error: true
 
       - name: Check environment ymls (non-fatal)
         run: |
-          for f in $(find . -name 'environment.yml' ! -name '*full-export*'); do
-            python -c '
-import yaml
-try:
-  with open("'"$f"'") as fh:
-    data = yaml.safe_load(fh)
-  print("OK:", "'"$f"'", "name=", data.get("name", "MISSING"), "deps=", len(data.get("dependencies", [])))
-except Exception as e:
-  print("Issue with", "'"$f"'", ":", e)
-' || echo "Issue with $f"
-          done
+          python -c '
+import yaml, glob
+for f in glob.glob("**/environment.yml", recursive=True):
+    if "full-export" in f: continue
+    try:
+        with open(f) as fh:
+            data = yaml.safe_load(fh)
+        print("OK:", f, "name=", data.get("name", "MISSING"), "deps=", len(data.get("dependencies", [])))
+    except Exception as e:
+        print("Issue with", f, ":", e)
+' || echo "Env check had issues"
         continue-on-error: true
 
       - name: Summary
         if: always()
-        run: echo "Validation completed. Check step logs for details. Non-fatal checks for learning project."
+        run: echo "Validation checks completed (non-fatal for this learning project). See step logs for any issues."
