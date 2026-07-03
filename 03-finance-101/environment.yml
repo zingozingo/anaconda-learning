@@ -1,0 +1,22 @@
+name: finance-101
+channels:
+  - defaults
+dependencies:
+  - python=3.12
+  - pandas
+  - matplotlib
+  - numpy
+  - jupyterlab
+  - requests
+  - seaborn
+  - pip
+  - pip:
+      - yfinance
+      - numpy-financial
+
+# Note: This is a minimal declarative spec for reproducibility and maintainability.
+# The previous full export (with exact build pins) has been backed up as environment-full-export.yml.
+# If you need exact pinned versions for a specific machine, use the full export or generate a lock file:
+#   conda list --export > environment.lock
+# Or use conda-lock tool for cross-platform locks.
+# Recreate with: conda env create -f environment.yml

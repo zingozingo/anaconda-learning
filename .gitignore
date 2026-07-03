@@ -1,0 +1,83 @@
+# anaconda-learning .gitignore
+# Generated as part of Grok Harness Chunk 1 (human-approved)
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments (conda + others)
+my-first-env/
+finance-101/
+finance-201/
+.envs/
+.venv/
+venv/
+ENV/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints/
+.jupyter/
+
+# OS generated
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE / editor
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Conda / package manager noise
+conda-meta/
+*.conda-lock.yml
+*.lock
+
+# Logs and temp
+*.log
+*.tmp
+*.temp
+
+# NOTE ON GENERATED ARTIFACTS (per plan trade-off):
+# We are currently *committing* the charts in data/charts/ because they are
+# part of the learning experience (instant visuals without re-running everything).
+# If this changes in a later chunk, uncomment the lines below:
+# *.png
+# data/charts/*.png
+
+# Large or raw data (none yet, but future-proof)
+# *.csv
+# *.parquet
+# data/raw/large/
+
+# Secrets / local config (never commit)
+.env
+*.pem
+credentials.json
+# (Personal email was present in one notebook header — cleaned in later chunk)
