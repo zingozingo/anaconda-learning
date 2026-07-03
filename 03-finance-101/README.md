@@ -49,7 +49,7 @@ Build on stock data to explore diversification. Compute a correlation matrix, ru
 - seaborn
 - JupyterLab
 
-**Note on notebooks:** The notebooks now include narrative markdown cells with overviews, goals, and explanations for key visualizations and concepts. Hardcoded parameters (e.g. simulation counts, years, rates, tickers) have been extracted to named constants (SEED, SIM_YEARS, etc.) for clarity. See the .ipynb files for the improved versions.
+**Note on notebooks:** The notebooks now include narrative markdown cells with overviews, goals, and explanations for key visualizations and concepts. Hardcoded parameters (e.g. simulation counts, years, rates, tickers) have been extracted to named constants for clarity. Each includes "Try This" sections with specific experiments (change a rate, extra payment, etc.) so you can actively drill and internalize the concepts by experimenting. See the .ipynb files.
 
 ## Getting Started
 
