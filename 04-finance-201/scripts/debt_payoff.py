@@ -21,10 +21,22 @@ def build_parser():
     )
     return parser
 
+def validate_debts(debts):
+    """Basic validation for debts list."""
+    if not debts or not isinstance(debts, list):
+        raise ValueError("Debts must be a non-empty list")
+    for d in debts:
+        if not all(k in d for k in ("name", "balance", "rate", "min_pay")):
+            raise ValueError("Each debt needs name, balance, rate, min_pay")
+        if d["balance"] <= 0 or d["rate"] < 0 or d["min_pay"] < 0:
+            raise ValueError("Balance >0, rate >=0, min_pay >=0 required")
+    return True
+
 
 def parse_debts(debts_json):
     """Parse the JSON debts string into parallel arrays."""
     raw = json.loads(debts_json)
+    validate_debts(raw)
     names = [d["name"] for d in raw]
     balances = np.array([d["balance"] for d in raw], dtype=float)
     rates = np.array([d["rate"] for d in raw], dtype=float)
@@ -140,19 +152,24 @@ def display_results(names, strategies_results, extra):
 if __name__ == "__main__":
     parser = build_parser()
     args = parser.parse_args()
+    try:
+        names, balances, rates, min_pays = parse_debts(args.debts)
 
-    names, balances, rates, min_pays = parse_debts(args.debts)
-
-    strategies = ["avalanche", "snowball"] if args.strategy == "both" else [args.strategy]
-    results = {}
-    for strategy in strategies:
-        payoff_months, total_interest, total_months = simulate_payoff(
-            names, balances, rates, min_pays, strategy, args.extra
-        )
-        results[strategy] = {
-            "payoff_months": payoff_months,
-            "total_interest": total_interest,
-            "total_months": total_months,
-        }
+        strategies = ["avalanche", "snowball"] if args.strategy == "both" else [args.strategy]
+        results = {}
+        for strategy in strategies:
+            payoff_months, total_interest, total_months = simulate_payoff(
+                names, balances, rates, min_pays, strategy, args.extra
+            )
+            results[strategy] = {
+                "payoff_months": payoff_months,
+                "total_interest": total_interest,
+                "total_months": total_months,
+            }
+        display_results(names, results, args.extra)
+    except (json.JSONDecodeError, ValueError, TypeError) as e:
+        print(f"Error: {e}")
+        print("Example: python scripts/debt_payoff.py --extra 300 --debts '[{\"name\":\"CC\",\"balance\":4500,\"rate\":0.24,\"min_pay\":90}]'")
+        sys.exit(1)
 
     display_results(names, results, args.extra)
