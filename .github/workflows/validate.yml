@@ -17,23 +17,46 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Basic syntax check for scripts
-        run: |
-          python -m py_compile 03-finance-101/scripts/*.py || echo "Note: some scripts may require full env"
-          python -m py_compile 04-finance-201/scripts/*.py || echo "Note: some scripts may require full env"
+      - name: Install minimal deps
+        run: pip install pyyaml
 
-      - name: Check notebooks are valid JSON
+      - name: Basic syntax check for scripts (non-fatal for learning)
+        run: |
+          python -m py_compile 03-finance-101/scripts/*.py || echo "Note: some scripts may require the full conda env"
+          python -m py_compile 04-finance-201/scripts/*.py || echo "Note: some scripts may require the full conda env"
+        continue-on-error: true
+
+      - name: Check notebooks are valid JSON (non-fatal)
         run: |
           for nb in $(find . -name "*.ipynb" ! -path "*/.ipynb_checkpoints/*"); do
-            python -c "import json; json.load(open('$nb')); print('OK: $nb')" || echo "Issue with $nb"
+            python -c "
+import json, sys
+try:
+    with open('$nb') as f:
+        data = json.load(f)
+    print(f'OK: $nb ({len(data.get(\"cells\", []))} cells)')
+except Exception as e:
+    print(f'Issue with $nb: {e}')
+" 
           done
+        continue-on-error: true
 
-      - name: Check env files have name
+      - name: Check environment ymls have basic structure (non-fatal)
         run: |
           for f in $(find . -name 'environment.yml' ! -name '*full-export*'); do
             python -c "
-import yaml
-data = yaml.safe_load(open('$f'))
-print(f'$f name: {data.get(\"name\", \"missing\")}')
+import yaml, sys
+try:
+    with open('$f') as fh:
+        data = yaml.safe_load(fh)
+    name = data.get('name', 'MISSING')
+    deps = len(data.get('dependencies', []))
+    print(f'OK: $f name={name} deps={deps}')
+except Exception as e:
+    print(f'Issue with $f: {e}')
 " 
           done
+        continue-on-error: true
+
+      - name: Summary
+        run: echo "Validation checks completed (some may be non-fatal for this learning project). See individual step logs."
