@@ -1,3 +1,9 @@
+"""
+01-first-chart: Basic real-world data pull and visualization.
+Pulls country population data via REST API, aggregates by region, and saves a bar chart.
+Early experiment in using Python (requests + pandas + matplotlib) for data exploration.
+"""
+
 import requests
 import pandas as pd
 import matplotlib.pyplot as plt
