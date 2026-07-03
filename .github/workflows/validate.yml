@@ -20,7 +20,7 @@ jobs:
       - name: Install minimal deps
         run: pip install pyyaml
 
-      - name: Basic syntax check for scripts (non-fatal)
+      - name: Basic syntax check for scripts (non-fatal for learning)
         run: |
           python -m py_compile 03-finance-101/scripts/*.py || echo "Note: some scripts may require full env"
           python -m py_compile 04-finance-201/scripts/*.py || echo "Note: some scripts may require full env"
@@ -28,8 +28,9 @@ jobs:
 
       - name: Check notebooks are valid JSON (non-fatal)
         run: |
-          python -c '
-import json, glob
+          python - << 'PYEOF'
+import json
+import glob
 for nb in glob.glob("**/*.ipynb", recursive=True):
     if "checkpoint" in nb: continue
     try:
@@ -38,13 +39,15 @@ for nb in glob.glob("**/*.ipynb", recursive=True):
         print("OK:", nb, len(data.get("cells", [])), "cells")
     except Exception as e:
         print("Issue with", nb, ":", e)
-' || echo "Notebook check had issues"
+PYEOF
+        || echo "Notebook check had issues"
         continue-on-error: true
 
       - name: Check environment ymls (non-fatal)
         run: |
-          python -c '
-import yaml, glob
+          python - << 'PYEOF'
+import yaml
+import glob
 for f in glob.glob("**/environment.yml", recursive=True):
     if "full-export" in f: continue
     try:
@@ -53,7 +56,8 @@ for f in glob.glob("**/environment.yml", recursive=True):
         print("OK:", f, "name=", data.get("name", "MISSING"), "deps=", len(data.get("dependencies", [])))
     except Exception as e:
         print("Issue with", f, ":", e)
-' || echo "Env check had issues"
+PYEOF
+        || echo "Env check had issues"
         continue-on-error: true
 
       - name: Summary
