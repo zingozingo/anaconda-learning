@@ -28,36 +28,34 @@ jobs:
 
       - name: Check notebooks are valid JSON (non-fatal)
         run: |
-          cat > /tmp/check_notebooks.py << 'EOF'
-import json
-import glob
-for nb in glob.glob("**/*.ipynb", recursive=True):
-    if "checkpoint" in nb: continue
+          cat > /tmp/check_notebooks.py << 'PYEOF'
+import json, glob, sys
+for nb in glob.glob('**/*.ipynb', recursive=True):
+    if 'checkpoint' in nb: continue
     try:
         with open(nb) as f:
             data = json.load(f)
-        print("OK:", nb, len(data.get("cells", [])), "cells")
+        print('OK:', nb, len(data.get('cells', [])), 'cells')
     except Exception as e:
-        print("Issue with", nb, ":", e)
-EOF
-          python /tmp/check_notebooks.py || echo "Notebook check had issues"
+        print('Issue with', nb, ':', e)
+PYEOF
+          python3 /tmp/check_notebooks.py || echo "Notebook check had issues"
         continue-on-error: true
 
       - name: Check environment ymls (non-fatal)
         run: |
-          cat > /tmp/check_envs.py << 'EOF'
-import yaml
-import glob
-for f in glob.glob("**/environment.yml", recursive=True):
-    if "full-export" in f: continue
+          cat > /tmp/check_envs.py << 'PYEOF'
+import yaml, glob, sys
+for f in glob.glob('**/environment.yml', recursive=True):
+    if 'full-export' in f: continue
     try:
         with open(f) as fh:
             data = yaml.safe_load(fh)
-        print("OK:", f, "name=", data.get("name", "MISSING"), "deps=", len(data.get("dependencies", [])))
+        print('OK:', f, 'name=', data.get('name', 'MISSING'), 'deps=', len(data.get('dependencies', [])))
     except Exception as e:
-        print("Issue with", f, ":", e)
-EOF
-          python /tmp/check_envs.py || echo "Env check had issues"
+        print('Issue with', f, ':', e)
+PYEOF
+          python3 /tmp/check_envs.py || echo "Env check had issues"
         continue-on-error: true
 
       - name: Summary
