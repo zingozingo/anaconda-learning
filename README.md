@@ -59,6 +59,7 @@ See per-module `README.md` (in 03/ and 04/) for phases and more examples.
 - Scripts: Improved validation/error handling on key ones.
 - Structure: Root + per-module READMEs (03/04), .gitignore, local git.
 - Harness: Registered (data-science-conda-jupyter, prototype). See grok-harness docs/handoff for AI session history.
+- CI (level 1): .github/workflows/validate.yml (notebooks + envs + scripts syntax, non-fatal). Verify directly: `gh run list --limit 3 && gh run view <id>` (or `actionlint .github/workflows/validate.yml` locally). Latest runs use direct gh + actionlint diagnosis (no screenshots required for state). See grok-harness docs/platform-github.md.
 
 ## Learning Path Summary
 
